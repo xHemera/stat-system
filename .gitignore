@@ -1,0 +1,10 @@
+# Ignore dossier d'objets de compilation
+obj/
+
+# Ignore l'exécutable principal
+stat-system
+
+# Ignore les fichiers temporaires ou de sauvegarde
+*.swp
+*~
+.DS_Store
