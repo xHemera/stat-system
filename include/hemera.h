@@ -60,5 +60,6 @@ t_enemy load_enemy_from_line(char *line);
 t_enemy *load_enemies(const char *filename, int *count);
 t_enemy get_enemy_by_name(t_enemy *enemies, int count, const char *name);
 void list_enemies(t_enemy *enemies, int enemy_count);
+int main_loop(t_player *player, t_enemy *enemies, int enemy_count);
 
 #endif
