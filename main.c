@@ -12,9 +12,7 @@ int main_loop(t_player player)
         {
             simple = str_simplify(cmd);
             if (simple && strcmp(simple, "stats") == 0)
-            {
                 print_stats(player);
-            }
             free(simple);
         }
         free(cmd);
