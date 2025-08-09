@@ -16,6 +16,7 @@ int main_loop(t_player *player)
         if (!cmd)
             continue;
         simple = str_simplify(cmd);
+		add_history(simple);
 
         if (strcmp(simple, "/debug") == 0)
         {
@@ -24,11 +25,8 @@ int main_loop(t_player *player)
         }
         else if (strcmp(simple, "stats") == 0)
             debug ? super_stats(*player) : print_stats(*player);
-		// else if (strcmp(simple, "exemple") == 0)
-        // {
-        // 	debug ? fonction_admin(*player) : fonction_normale(*player);
-		// 	fonction_normale(*player); si pas de commande admin
-        // }
+		else if (strcmp(simple, "levelup") == 0 && debug)
+			level_up(player);
 
         free(simple);
         free(cmd);

@@ -1,10 +1,12 @@
-# Ignore dossier d'objets de compilation
 obj/
+saves/
 
-# Ignore l'exécutable principal
 stat-system
+readline.supp
+roadmap.md
 
-# Ignore les fichiers temporaires ou de sauvegarde
+
+
 *.swp
 *~
 .DS_Store

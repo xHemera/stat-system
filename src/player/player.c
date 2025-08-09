@@ -54,8 +54,8 @@ t_stats stats_add(const t_stats *base, int level, const t_stats *bonus)
     res.armor = base->armor * level + bonus->armor;
     res.armor_pen = base->armor_pen * level + bonus->armor_pen;
 
-    res.energy = base->energy * level + bonus->energy;
-    res.energy_regen = base->energy_regen * level + bonus->energy_regen;
+    res.energy = base->energy + bonus->energy;
+    res.energy_regen = base->energy_regen + bonus->energy_regen;
     return res;
 }
 
@@ -66,5 +66,6 @@ void updateStats(t_player *player)
 
 void level_up(t_player *player)
 {
+	printf("Vous avez monte de niveau!\n");
 	player->level += 1;
 }

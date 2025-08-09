@@ -5,6 +5,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 
 extern int debug;
 
@@ -45,5 +46,6 @@ void print_stats(t_player player);
 void updateStats(t_player *player);
 t_stats stats_add(const t_stats *base, int level, const t_stats *bonus);
 void super_stats(t_player player);
+void level_up(t_player *player);
 
 #endif
