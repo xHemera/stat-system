@@ -19,6 +19,7 @@
 #define MAX_ENEMIES         100
 #define PROMPT_NORMAL       "> "
 #define PROMPT_DEBUG        " > "
+#define clrscr() printf("\e[1;1H\e[2J")
 
 // ============================================================================
 //                           VARIABLES GLOBALES
@@ -76,6 +77,21 @@ typedef struct s_enemy {
     int gold_reward;          // Or donné à la mort
 } t_enemy;
 
+/**
+ * @brief Type de fonction pour gérer une commande
+ */
+typedef int (*t_command_handler)(t_player *player, t_enemy *enemies, int enemy_count, char *args);
+
+/**
+ * @brief Structure représentant une commande
+ */
+typedef struct s_command {
+    char *name;                    // Nom de la commande
+    t_command_handler handler;     // Fonction à exécuter
+    int admin_only;               // 1 si commande admin, 0 sinon
+    char *description;            // Description pour l'aide
+} t_command;
+
 // ============================================================================
 //                          PROTOTYPES DE FONCTIONS
 // ============================================================================
@@ -103,5 +119,20 @@ void cleanup_and_exit(t_enemy *enemies);
 
 // --- Boucle principale ---
 int main_loop(t_player *player, t_enemy *enemies, int enemy_count);
+
+// --- Système de commandes ---
+int cmd_exit(t_player *player, t_enemy *enemies, int enemy_count, char *args);
+int cmd_stats(t_player *player, t_enemy *enemies, int enemy_count, char *args);
+int cmd_fight(t_player *player, t_enemy *enemies, int enemy_count, char *args);
+int cmd_levelup(t_player *player, t_enemy *enemies, int enemy_count, char *args);
+int cmd_enemies(t_player *player, t_enemy *enemies, int enemy_count, char *args);
+int cmd_help(t_player *player, t_enemy *enemies, int enemy_count, char *args);
+t_command *find_command(char *name);
+int execute_command(char *input, t_player *player, t_enemy *enemies, int enemy_count);
+
+// --- Gestion des combats ---
+t_enemy *choose_enemy(t_enemy *enemies, int enemy_count, char *param);
+char *extract_fight_param(char *cmd);
+int fight(t_player *player, t_enemy *enemy);
 
 #endif /* HEMERA_H */

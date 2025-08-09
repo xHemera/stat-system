@@ -13,7 +13,9 @@ SRCS =	main.c \
 		src/entities/player.c \
 		src/entities/enemy.c \
 		src/core/loop.c \
-		src/utils/debug.c
+		src/core/fight.c \
+		src/utils/debug.c \
+		src/core/commands.c
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 # Default target

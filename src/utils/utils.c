@@ -35,7 +35,6 @@ void cleanup_and_exit(t_enemy *enemies)
     if (enemies)
         free(enemies);
 
-    // Nettoyer l'historique readline
     clear_history();
 
     if (debug)

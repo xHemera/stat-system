@@ -24,7 +24,7 @@ int main()
 
     // Configuration des signaux
     signal(SIGINT, signal_handler);
-
+	clrscr();
     printf("Entrez un nom de joueur :\n");
     while (1)
     {
@@ -47,10 +47,7 @@ int main()
 
     int enemy_count;
     t_enemy *enemies = load_enemies("data/enemies", &enemy_count);
-    global_enemies = enemies; // Pour le signal handler
-
-    if (enemies)
-        printf("Chargé %d ennemis\n", enemy_count);
+    global_enemies = enemies;
 
     main_loop(&player, enemies, enemy_count);
 
