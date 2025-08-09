@@ -19,6 +19,7 @@
 #define MAX_ENEMIES         100
 #define PROMPT_NORMAL       "> "
 #define PROMPT_DEBUG        " > "
+#define PROMPT_FIGHT        "󰞇 > "
 #define clrscr() printf("\e[1;1H\e[2J")
 
 // ============================================================================
@@ -30,9 +31,6 @@ extern int debug;
 //                              STRUCTURES
 // ============================================================================
 
-/**
- * @brief Structure contenant toutes les statistiques d'une entité
- */
 typedef struct s_stats {
     // Survivabilité
     float health;             // Points de vie fixes
@@ -54,9 +52,6 @@ typedef struct s_stats {
     int energy_regen;         // Points d'énergie récupérés par tour
 } t_stats;
 
-/**
- * @brief Structure représentant un joueur
- */
 typedef struct s_player {
     char name[MAX_NAME_LENGTH];
     int level;
@@ -65,9 +60,6 @@ typedef struct s_player {
     t_stats total;            // Stats totales utilisées en combat
 } t_player;
 
-/**
- * @brief Structure représentant un ennemi
- */
 typedef struct s_enemy {
     char name[MAX_ENEMY_NAME];
     int level;
@@ -77,14 +69,8 @@ typedef struct s_enemy {
     int gold_reward;          // Or donné à la mort
 } t_enemy;
 
-/**
- * @brief Type de fonction pour gérer une commande
- */
 typedef int (*t_command_handler)(t_player *player, t_enemy *enemies, int enemy_count, char *args);
 
-/**
- * @brief Structure représentant une commande
- */
 typedef struct s_command {
     char *name;                    // Nom de la commande
     t_command_handler handler;     // Fonction à exécuter
@@ -133,6 +119,15 @@ int execute_command(char *input, t_player *player, t_enemy *enemies, int enemy_c
 // --- Gestion des combats ---
 t_enemy *choose_enemy(t_enemy *enemies, int enemy_count, char *param);
 char *extract_fight_param(char *cmd);
+int calculate_initiative(t_player *player, t_enemy *enemy);
+int execute_combat(t_player *player, t_enemy *enemy, int player_has_initiative);
+int execute_player_turn(t_player *player, t_enemy *enemy, int *enemy_missing_health, int *player_missing_health);
+void execute_enemy_turn(t_player *player, t_enemy *enemy, int *player_missing_health);
 int fight(t_player *player, t_enemy *enemy);
+void display_health_bar(float health_percent);
+
+// --- Calculs de dégâts ---
+float calculate_physical_damage(float attack, float armor, float armor_pen);
+float calculate_magical_damage(float magic_attack, float magic_armor, float magic_pen);
 
 #endif /* HEMERA_H */

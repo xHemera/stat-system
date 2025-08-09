@@ -73,55 +73,24 @@ t_enemy *choose_enemy(t_enemy *enemies, int enemy_count, char *param)
 
 char *extract_fight_param(char *cmd)
 {
-    // Chercher "fight" au début de la commande
     if (strncmp(cmd, "fight", 5) != 0)
         return NULL;
 
-    // Pointer après "fight"
     char *param_start = cmd + 5;
 
-    // Passer les espaces après "fight"
     while (*param_start == ' ')
         param_start++;
 
-    // Si fin de chaîne, pas de paramètre
     if (*param_start == '\0')
         return NULL;
 
-    // Retourner une copie du reste de la chaîne (sans les espaces de fin)
     char *param = strdup(param_start);
 
-    // Supprimer les espaces de fin
     int len = strlen(param);
     while (len > 0 && param[len - 1] == ' ')
     {
         param[len - 1] = '\0';
         len--;
     }
-
     return param;
-}
-
-int fight(t_player *player, t_enemy *enemy)
-{
-	updateStats(player);
-
-	printf("%s entre en combat contre %s!\n", player->name, enemy->name);
-
-	int level_diff = player->level - enemy->level;
-
-	if (level_diff <= -5) {
-		printf("Votre niveau est trop faible... %s a l'initiative!\n", enemy->name);
-	} else if (level_diff >= 5) {
-		printf("L'ennemi est faible! %s a l'initiative!\n", player->name);
-	} else {
-		printf("Calcul d'initiative...\n");
-		int initiative = rand() % (player->total.energy + enemy->total.energy);
-		if (initiative < player->total.energy) {
-			printf("%s a l'initiative!\n", player->name);
-		} else {
-			printf("%s a l'initiative!\n", enemy->name);
-		}
-	}
-	return 0;
 }

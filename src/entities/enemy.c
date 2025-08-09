@@ -24,13 +24,22 @@ t_enemy load_enemy_from_line(char *line)
     t_enemy enemy = {0};
     char *token;
     int field = 0;
+    const int expected_fields = 15;
 
     token = strtok(line, "|");
-    while (token != NULL && field < 15)
+    while (token != NULL && field < expected_fields)
     {
+        // Nettoyer les espaces en début/fin
+        while (*token == ' ') token++;
+        int len = strlen(token);
+        while (len > 0 && token[len-1] == ' ') token[--len] = '\0';
+
         switch (field)
         {
-            case 0: strcpy(enemy.name, token); break;
+            case 0:
+                strncpy(enemy.name, token, MAX_ENEMY_NAME - 1);
+                enemy.name[MAX_ENEMY_NAME - 1] = '\0';
+                break;
             case 1: enemy.level = atoi(token); break;
             case 2: enemy.base.health = atof(token); break;
             case 3: enemy.base.heal_shield_power = atof(token); break;
@@ -49,6 +58,10 @@ t_enemy load_enemy_from_line(char *line)
         token = strtok(NULL, "|");
         field++;
     }
+
+    // Validation des données critiques
+    if (enemy.level <= 0) enemy.level = 1;
+    if (enemy.base.health <= 0) enemy.base.health = 10;
 
     calculate_enemy_stats(&enemy);
     return enemy;
@@ -87,14 +100,23 @@ t_enemy *load_enemies(const char *filename, int *count)
 
 t_enemy get_enemy_by_name(t_enemy *enemies, int count, const char *name)
 {
+    if (!enemies || !name || count <= 0)
+    {
+        t_enemy empty = {0};
+        strncpy(empty.name, "Unknown", MAX_ENEMY_NAME - 1);
+        empty.name[MAX_ENEMY_NAME - 1] = '\0';
+        return empty;
+    }
+
     for (int i = 0; i < count; i++)
     {
-        if (strcmp(enemies[i].name, name) == 0)
+        if (strcasecmp(enemies[i].name, name) == 0) // Comparaison insensible à la casse
             return enemies[i];
     }
 
     // Retourner un ennemi vide si non trouvé
     t_enemy empty = {0};
-    strcpy(empty.name, "Unknown");
+    strncpy(empty.name, "Unknown", MAX_ENEMY_NAME - 1);
+    empty.name[MAX_ENEMY_NAME - 1] = '\0';
     return empty;
 }

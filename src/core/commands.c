@@ -6,7 +6,7 @@
 
 int cmd_exit(t_player *player, t_enemy *enemies, int enemy_count, char *args)
 {
-    (void)args; (void)enemy_count; // Supprime les warnings
+    (void)args; (void)enemy_count;
     printf("Au revoir %s !\n", player->name);
     cleanup_and_exit(enemies);
     exit(0);
@@ -14,7 +14,7 @@ int cmd_exit(t_player *player, t_enemy *enemies, int enemy_count, char *args)
 
 int cmd_stats(t_player *player, t_enemy *enemies, int enemy_count, char *args)
 {
-    (void)enemies; (void)enemy_count; (void)args; // Supprime les warnings
+    (void)enemies; (void)enemy_count; (void)args;
     if (debug)
         super_stats(*player);
     else
@@ -29,54 +29,57 @@ int cmd_fight(t_player *player, t_enemy *enemies, int enemy_count, char *args)
     if (chosen_enemy)
     {
         int result = fight(player, chosen_enemy);
-        if (result == 0)
-            printf("Le combat s'est terminé avec succès !\n");
+        const char *messages[] = {
+            "Le combat a échoué.\n",
+            "Vous avez gagné le combat !\n",
+            "Vous avez perdu le combat.\n"
+        };
+
+        // Gestion sécurisée des résultats
+        if (result >= -1 && result <= 1)
+            printf("%s", messages[result + 1]);
         else
-            printf("Le combat a échoué.\n");
+            printf("Résultat de combat inattendu.\n");
     }
     return 0;
 }
 
 int cmd_levelup(t_player *player, t_enemy *enemies, int enemy_count, char *args)
 {
-    (void)enemies; (void)enemy_count; (void)args; // Supprime les warnings
+    (void)enemies; (void)enemy_count; (void)args;
     level_up(player);
     return 0;
 }
 
 int cmd_enemies(t_player *player, t_enemy *enemies, int enemy_count, char *args)
 {
-    (void)player; (void)args; // Supprime les warnings
+    (void)player; (void)args;
     list_enemies(enemies, enemy_count);
     return 0;
 }
 
 int cmd_help(t_player *player, t_enemy *enemies, int enemy_count, char *args)
 {
-    (void)player; (void)enemies; (void)enemy_count; (void)args; // Supprime les warnings
+    (void)player; (void)enemies; (void)enemy_count; (void)args;
 
     extern t_command commands[]; // Déclaration externe
 
     printf("\n=== COMMANDES DISPONIBLES ===\n");
     printf("Commandes générales :\n");
 
-    int i = 0;
-    while (commands[i].name)
+    for (int i = 0; commands[i].name; i++)
     {
         if (!commands[i].admin_only)
             printf("  %-10s - %s\n", commands[i].name, commands[i].description);
-        i++;
     }
 
     if (debug)
     {
         printf("\nCommandes admin (mode debug) :\n");
-        i = 0;
-        while (commands[i].name)
+        for (int i = 0; commands[i].name; i++)
         {
             if (commands[i].admin_only)
                 printf("  %-10s - %s\n", commands[i].name, commands[i].description);
-            i++;
         }
     }
 
@@ -97,6 +100,7 @@ t_command commands[] = {
     {"help",     cmd_help,    0, "Afficher cette aide"},
     {"fight",    cmd_fight,   1, "Combattre un ennemi (fight, fight <nom>, fight <index>, fight random)"},
     {"levelup",  cmd_levelup, 1, "Monter d'un niveau (debug)"},
+	{"lvl",      cmd_levelup, 1, "MACRO levelup"},
     {"enemies",  cmd_enemies, 1, "Lister tous les ennemis disponibles"},
     {NULL,       NULL,        0, NULL} // Sentinelle pour marquer la fin
 };
@@ -107,12 +111,13 @@ t_command commands[] = {
 
 t_command *find_command(char *name)
 {
-    int i = 0;
-    while (commands[i].name)
+    if (!name)
+        return NULL;
+
+    for (int i = 0; commands[i].name; i++)
     {
         if (strcmp(commands[i].name, name) == 0)
             return &commands[i];
-        i++;
     }
     return NULL;
 }

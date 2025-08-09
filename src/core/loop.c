@@ -20,6 +20,13 @@ int main_loop(t_player *player, t_enemy *enemies, int enemy_count)
             return 0;
         }
 
+        // Ignorer les lignes vides
+        if (strlen(cmd) == 0)
+        {
+            free(cmd);
+            continue;
+        }
+
         simple = str_simplify(cmd);
         if (!simple)
         {
@@ -39,7 +46,9 @@ int main_loop(t_player *player, t_enemy *enemies, int enemy_count)
                 printf("Commande système inconnue : '%s'\n", simple);
         }
         else
+        {
             execute_command(simple, player, enemies, enemy_count);
+        }
 
         free(simple);
         free(cmd);
