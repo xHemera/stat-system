@@ -10,7 +10,8 @@ OBJ_DIR = obj
 SRCS =	main.c \
 		src/utils/utils.c \
 		src/utils/print_stats.c \
-		src/player/player_init.c
+		src/player/player.c \
+		src/utils/debug.c
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 # Default target
