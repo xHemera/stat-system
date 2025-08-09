@@ -74,7 +74,7 @@ int main()
     printf("Bienvenue %s!\n", player.name);
 
     int enemy_count;
-    t_enemy *enemies = load_enemies("data/enemies.txt", &enemy_count);
+    t_enemy *enemies = load_enemies("data/enemies", &enemy_count);
     if (enemies)
         printf("Chargé %d ennemis\n", enemy_count);
 
