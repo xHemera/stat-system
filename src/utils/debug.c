@@ -48,3 +48,38 @@ void super_stats(t_player player)
 
     printf("%s\n\n", bottom);
 }
+
+void list_enemies(t_enemy *enemies, int enemy_count)
+{
+    if (!enemies || enemy_count <= 0)
+    {
+        printf("Aucun ennemi chargé.\n");
+        return;
+    }
+
+    const char *top =    "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+    const char *sep =    "│─────────────────────────────────────────────────────────────────────────────────────────────────│";
+    const char *bottom = "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+
+    printf("\n%s\n", top);
+    printf("│                               LISTE DES ENNEMIS (%d chargés)                                │\n", enemy_count);
+    printf("%s\n", sep);
+    printf("│ %-20s │ Niv │   HP   │ P.Dmg │ M.Dmg │ Armor │ M.Armor │  XP  │ Gold │\n", "Nom");
+    printf("%s\n", sep);
+
+    for (int i = 0; i < enemy_count; i++)
+    {
+        printf("│ %-20s │ %3d │ %6.0f │ %5.1f │ %5.1f │ %5.1f │  %5.1f  │ %4d │ %4d │\n",
+            enemies[i].name,
+            enemies[i].level,
+            enemies[i].total.health,
+            enemies[i].total.physical_dmg,
+            enemies[i].total.magical_dmg,
+            enemies[i].total.armor,
+            enemies[i].total.magic_armor,
+            enemies[i].experience_reward,
+            enemies[i].gold_reward
+        );
+    }
+    printf("%s\n\n", bottom);
+}

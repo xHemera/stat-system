@@ -11,6 +11,7 @@ SRCS =	main.c \
 		src/utils/utils.c \
 		src/utils/print_stats.c \
 		src/player/player.c \
+		src/enemy/enemy.c \
 		src/utils/debug.c
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 

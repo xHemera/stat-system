@@ -30,6 +30,15 @@ typedef struct s_stats {
 	int		energy_regen;       // Points d'énergie récupérés par tour
 } t_stats;
 
+typedef struct s_enemy {
+    char name[50];
+    int level;
+    t_stats base;     // Stats de base niveau 1
+    t_stats total;    // Stats calculées selon le niveau
+    int experience_reward;  // XP donnée à la mort
+    int gold_reward;        // Or donné à la mort
+} t_enemy;
+
 typedef struct s_player {
 	char 	name[20];
 	int		level;
@@ -47,5 +56,9 @@ void updateStats(t_player *player);
 t_stats stats_add(const t_stats *base, int level, const t_stats *bonus);
 void super_stats(t_player player);
 void level_up(t_player *player);
+t_enemy load_enemy_from_line(char *line);
+t_enemy *load_enemies(const char *filename, int *count);
+t_enemy get_enemy_by_name(t_enemy *enemies, int count, const char *name);
+void list_enemies(t_enemy *enemies, int enemy_count);
 
 #endif
