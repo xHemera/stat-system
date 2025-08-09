@@ -8,12 +8,15 @@ int main_loop(t_player *player, t_enemy *enemies, int enemy_count)
     while (1)
     {
         updateStats(player);
-        prompt = debug ? " > " : "> ";
+        prompt = debug ? PROMPT_DEBUG : PROMPT_NORMAL;
         cmd = readline(prompt);
+
+        // Gestion de Ctrl+D (EOF)
         if (!cmd)
         {
-            free(cmd);
-            continue;
+            printf("\nAu revoir %s !\n", player->name);
+            cleanup_and_exit(enemies);
+            return 0;
         }
 
         simple = str_simplify(cmd);
@@ -30,10 +33,26 @@ int main_loop(t_player *player, t_enemy *enemies, int enemy_count)
                 debug = !debug;
                 printf("[DEBUG] Mode debug %s.\n", debug ? "activé" : "désactivé");
             }
+            else if (strcmp(simple, "/exit") == 0 || strcmp(simple, "/quit") == 0)
+            {
+                printf("Au revoir %s !\n", player->name);
+                free(simple);
+                free(cmd);
+                cleanup_and_exit(enemies);
+                return 0;
+            }
         }
         else if (is_alpha(cmd))
         {
-            if (strcmp(simple, "stats") == 0)
+            if (strcmp(simple, "exit") == 0 || strcmp(simple, "quit") == 0)
+            {
+                printf("Au revoir %s !\n", player->name);
+                free(simple);
+                free(cmd);
+                cleanup_and_exit(enemies);
+                return 0;
+            }
+            else if (strcmp(simple, "stats") == 0)
             {
                 if (debug)
                     super_stats(*player);
@@ -49,5 +68,4 @@ int main_loop(t_player *player, t_enemy *enemies, int enemy_count)
         free(simple);
         free(cmd);
     }
-    return 0;
 }

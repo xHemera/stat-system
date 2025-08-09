@@ -29,3 +29,17 @@ char *str_simplify(char *src)
     ret[i] = '\0';
     return ret;
 }
+
+void cleanup_and_exit(t_enemy *enemies)
+{
+    if (enemies)
+        free(enemies);
+
+    // Nettoyer l'historique readline
+    clear_history();
+
+    if (debug)
+        printf("[DEBUG] Nettoyage terminé.\n");
+
+    exit(0);
+}
